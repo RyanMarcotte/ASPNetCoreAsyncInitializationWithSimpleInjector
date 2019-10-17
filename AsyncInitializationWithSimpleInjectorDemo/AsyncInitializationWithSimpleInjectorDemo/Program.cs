@@ -21,11 +21,6 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 		public static IWebHostBuilder CreateWebHostBuilder(string[] args) => WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
 	}
 
-	public interface IDbContextFactory<out T> where T : DbContext
-	{
-		T CreateContext();
-	}
-
 	internal static class AsyncInitializationExtensions
 	{
 		public static async Task<IWebHost> InitializeAsync(this IWebHost host)

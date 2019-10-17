@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AISIDemo.EntityFramework.Infrastructure\AISIDemo.EntityFramework.Infrastructure.csproj" />
+    <ProjectReference Include="..\AISIDemo.EntityFramework.Models\AISIDemo.EntityFramework.Models.csproj" />
+  </ItemGroup>
+
+</Project>

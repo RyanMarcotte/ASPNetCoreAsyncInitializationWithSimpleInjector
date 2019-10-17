@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AISIDemo.School.Implementation;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using SimpleInjector;
 using System;
@@ -17,7 +18,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 		public static void RegisterApplicationComponentsAndVerify(this Container container)
 		{
 			container.RegisterSingleton<IDbContextFactory<SchoolContext>, SchoolContextFactory>();
-			container.RegisterAllFunctionalCQSHandlers(Lifestyle.Singleton, typeof(Startup).Assembly);
+			container.RegisterAllFunctionalCQSHandlers(Lifestyle.Singleton, typeof(Startup).Assembly, typeof(AssemblyMarker).Assembly);
 			container.Verify();
 		}
 
