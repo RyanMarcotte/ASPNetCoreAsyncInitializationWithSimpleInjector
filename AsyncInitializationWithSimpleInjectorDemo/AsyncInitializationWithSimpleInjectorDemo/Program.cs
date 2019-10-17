@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -22,6 +21,11 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 		public static IWebHostBuilder CreateWebHostBuilder(string[] args) => WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
 	}
 
+	public interface IDbContextFactory<out T> where T : DbContext
+	{
+		T CreateContext();
+	}
+
 	internal static class AsyncInitializationExtensions
 	{
 		public static async Task<IWebHost> InitializeAsync(this IWebHost host)
@@ -29,7 +33,10 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 			using (var scope = host.Services.CreateScope())
 			{
 				var container = new Container();
-				container.Collection.Register<IAsyncInitializer>(typeof(EntityFrameworkDatabaseMigrationAsyncInitializer));
+				container.RegisterInstance(scope.ServiceProvider.GetService<DbContextOptions<SchoolContext>>());
+				container.Collection.Register<IAsyncInitializer>(
+					typeof(EntityFrameworkDatabaseMigrationAsyncInitializer),
+					typeof(EntityFrameworkDatabaseSeedDataAsyncInitializer));
 				container.Register<RootInitializer>();
 				container.RegisterApplicationComponentsAndVerify();
 

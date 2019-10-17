@@ -21,7 +21,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 			{
 				await initializer.InitializeAsync(CancellationToken.None).Match(
 					_ => _,
-					exception => throw new Exception("An exception occurred during initialization!", exception));
+					exception => throw new Exception($"An exception occurred during initialization ({initializer.GetType().FullName})!", exception));
 			}
 		}
 	}
