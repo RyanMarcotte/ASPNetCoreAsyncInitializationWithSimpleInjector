@@ -2,25 +2,49 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AISIDemo.School.Domain.Commands;
+using AsyncInitializationWithSimpleInjectorDemo.Initialization.QueryHandlers;
 using Functional;
+using Functional.CQS;
 
 namespace AsyncInitializationWithSimpleInjectorDemo
 {
 	public class EntityFrameworkDatabaseSeedDataAsyncInitializer : IAsyncInitializer
 	{
+		private readonly IAsyncQueryHandler<GetSchoolInitializationStatusQuery, Result<bool, Exception>> _getSchoolInitializationStatusQueryHandler;
+		private readonly IAsyncCommandHandler<SaveStudentDataCommand, Exception> _saveStudentDataCommandHandler;
+		private readonly IAsyncCommandHandler<SaveCourseDataCommand, Exception> _saveCourseDataCommandHandler;
+		private readonly IAsyncCommandHandler<SaveEnrollmentDataCommand, Exception> _saveEnrollmentDataCommandHandler;
+
 		private readonly IDbContextFactory<SchoolContext> _dbContextFactory;
 
-		public EntityFrameworkDatabaseSeedDataAsyncInitializer(IDbContextFactory<SchoolContext> dbContextFactory)
+		public EntityFrameworkDatabaseSeedDataAsyncInitializer(
+			IAsyncQueryHandler<GetSchoolInitializationStatusQuery, Result<bool, Exception>> getSchoolInitializationStatusQueryHandler,
+			IAsyncCommandHandler<SaveStudentDataCommand, Exception> saveStudentDataCommandHandler,
+			IAsyncCommandHandler<SaveCourseDataCommand, Exception> saveCourseDataCommandHandler,
+			IAsyncCommandHandler<SaveEnrollmentDataCommand, Exception> saveEnrollmentDataCommandHandler)
 		{
-			_dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
+			_getSchoolInitializationStatusQueryHandler = getSchoolInitializationStatusQueryHandler ?? throw new ArgumentNullException(nameof(getSchoolInitializationStatusQueryHandler));
+			_saveStudentDataCommandHandler = saveStudentDataCommandHandler ?? throw new ArgumentNullException(nameof(saveStudentDataCommandHandler));
+			_saveCourseDataCommandHandler = saveCourseDataCommandHandler ?? throw new ArgumentNullException(nameof(saveCourseDataCommandHandler));
+			_saveEnrollmentDataCommandHandler = saveEnrollmentDataCommandHandler ?? throw new ArgumentNullException(nameof(saveEnrollmentDataCommandHandler));
 		}
 
 		public Task<Result<Unit, Exception>> InitializeAsync(CancellationToken cancellationToken = default)
 		{
-			return Result.TryAsync(async () =>
-			{
+			return _getSchoolInitializationStatusQueryHandler.HandleAsync(new GetSchoolInitializationStatusQuery(), cancellationToken)
+				.BindIfFalseAsync(async () =>
+				{
+					return await _saveStudentDataCommandHandler.HandleAsync(new SaveStudentDataCommand(), cancellationToken)
+						.BindAsync(_ => _saveCourseDataCommandHandler.HandleAsync(new SaveCourseDataCommand(), cancellationToken))
+						.BindAsync(_ => _saveEnrollmentDataCommandHandler.HandleAsync(new SaveEnrollmentDataCommand(), cancellationToken));
+				});
+
+			/*{
+				
 				using (var context = _dbContextFactory.CreateContext())
 				{
+
 					if (context.Students.Any())
 						return;
 
@@ -74,7 +98,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 					
 					await context.SaveChangesAsync();
 				}
-			});
+			});*/
 		}
 	}
 }
