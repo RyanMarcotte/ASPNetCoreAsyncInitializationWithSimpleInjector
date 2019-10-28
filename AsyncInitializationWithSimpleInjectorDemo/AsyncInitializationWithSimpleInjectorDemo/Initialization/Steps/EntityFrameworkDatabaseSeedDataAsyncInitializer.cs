@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AISIDemo.EntityFramework.Infrastructure;
+using AISIDemo.School.Domain;
 using AISIDemo.School.Domain.Commands;
 using AsyncInitializationWithSimpleInjectorDemo.Initialization.QueryHandlers;
 using Functional;
@@ -35,9 +36,9 @@ namespace AsyncInitializationWithSimpleInjectorDemo.Initialization.Steps
 			return _getSchoolInitializationStatusQueryHandler.HandleAsync(new GetSchoolInitializationStatusQuery(), cancellationToken)
 				.BindIfFalseAsync(async () =>
 				{
-					return await _saveStudentDataCommandHandler.HandleAsync(new SaveStudentDataCommand(), cancellationToken)
-						.BindAsync(_ => _saveCourseDataCommandHandler.HandleAsync(new SaveCourseDataCommand(), cancellationToken))
-						.BindAsync(_ => _saveEnrollmentDataCommandHandler.HandleAsync(new SaveEnrollmentDataCommand(), cancellationToken));
+					return await _saveStudentDataCommandHandler.HandleAsync(new SaveStudentDataCommand(CreateStudentSeedData()), cancellationToken)
+						.BindAsync(_ => _saveCourseDataCommandHandler.HandleAsync(new SaveCourseDataCommand(CreateCourseSeedData()), cancellationToken))
+						.BindAsync(_ => _saveEnrollmentDataCommandHandler.HandleAsync(new SaveEnrollmentDataCommand(CreateEnrollmentSeedData()), cancellationToken));
 				});
 
 			/*{
@@ -99,6 +100,21 @@ namespace AsyncInitializationWithSimpleInjectorDemo.Initialization.Steps
 					await context.SaveChangesAsync();
 				}
 			});*/
+		}
+
+		private static Student[] CreateStudentSeedData()
+		{
+			return new Student[] { };
+		}
+
+		private static Course[] CreateCourseSeedData()
+		{
+			return new Course[] { };
+		}
+
+		private static Enrollment[] CreateEnrollmentSeedData()
+		{
+			return new Enrollment[] { };
 		}
 	}
 }
