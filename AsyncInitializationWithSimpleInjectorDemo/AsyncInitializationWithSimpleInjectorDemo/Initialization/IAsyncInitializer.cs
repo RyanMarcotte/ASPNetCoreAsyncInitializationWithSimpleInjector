@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Functional;
 
-namespace AsyncInitializationWithSimpleInjectorDemo
+namespace AsyncInitializationWithSimpleInjectorDemo.Initialization
 {
 	public interface IAsyncInitializer
 	{

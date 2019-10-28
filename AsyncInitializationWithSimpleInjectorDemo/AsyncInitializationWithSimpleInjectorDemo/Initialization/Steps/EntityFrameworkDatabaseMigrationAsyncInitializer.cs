@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AISIDemo.EntityFramework.Infrastructure;
 using Functional;
 using Microsoft.EntityFrameworkCore;
 
-namespace AsyncInitializationWithSimpleInjectorDemo
+namespace AsyncInitializationWithSimpleInjectorDemo.Initialization.Steps
 {
 	public class EntityFrameworkDatabaseMigrationAsyncInitializer : IAsyncInitializer
 	{

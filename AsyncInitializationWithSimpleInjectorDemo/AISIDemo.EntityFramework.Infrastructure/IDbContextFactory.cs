@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace AsyncInitializationWithSimpleInjectorDemo
+namespace AISIDemo.EntityFramework.Infrastructure
 {
 	public interface IDbContextFactory<out T> where T : DbContext
 	{

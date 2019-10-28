@@ -1,4 +1,4 @@
-﻿namespace AsyncInitializationWithSimpleInjectorDemo
+﻿namespace AISIDemo.EntityFramework.Models
 {
 	public class EnrollmentRecord
 	{

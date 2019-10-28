@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using Functional;
 
-namespace AsyncInitializationWithSimpleInjectorDemo
+// ReSharper disable once CheckNamespace
+namespace AsyncInitializationWithSimpleInjectorDemo.Initialization.Steps
 {
 	internal static class InitializationStatusCheckResultExtensions
 	{

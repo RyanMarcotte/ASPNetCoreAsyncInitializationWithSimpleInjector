@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AISIDemo.EntityFramework.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace AsyncInitializationWithSimpleInjectorDemo
+namespace AISIDemo.EntityFramework.Infrastructure
 {
 	public class SchoolContext : DbContext
 	{

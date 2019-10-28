@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AsyncInitializationWithSimpleInjectorDemo
+namespace AISIDemo.EntityFramework.Models
 {
 	public class CourseRecord
 	{

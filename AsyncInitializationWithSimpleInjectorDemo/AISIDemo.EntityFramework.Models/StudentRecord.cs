@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AsyncInitializationWithSimpleInjectorDemo
+namespace AISIDemo.EntityFramework.Models
 {
 	public class StudentRecord
 	{

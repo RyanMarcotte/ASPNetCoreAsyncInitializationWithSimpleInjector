@@ -1,10 +1,11 @@
-﻿using AISIDemo.School.Implementation;
+﻿using System;
+using AISIDemo.EntityFramework.Infrastructure;
+using AISIDemo.School.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using SimpleInjector;
-using System;
 
-namespace AsyncInitializationWithSimpleInjectorDemo
+namespace AsyncInitializationWithSimpleInjectorDemo.IoC
 {
 	internal static class SimpleInjectorExtensions
 	{
@@ -19,6 +20,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 		{
 			container.RegisterSingleton<IDbContextFactory<SchoolContext>, SchoolContextFactory>();
 			container.RegisterAllFunctionalCQSHandlers(Lifestyle.Singleton, typeof(Startup).Assembly, typeof(AssemblyMarker).Assembly);
+
 			container.Verify();
 		}
 

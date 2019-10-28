@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AISIDemo.EntityFramework.Infrastructure;
 using AISIDemo.School.Domain.Commands;
 using AsyncInitializationWithSimpleInjectorDemo.Initialization.QueryHandlers;
 using Functional;
 using Functional.CQS;
 
-namespace AsyncInitializationWithSimpleInjectorDemo
+namespace AsyncInitializationWithSimpleInjectorDemo.Initialization.Steps
 {
 	public class EntityFrameworkDatabaseSeedDataAsyncInitializer : IAsyncInitializer
 	{
