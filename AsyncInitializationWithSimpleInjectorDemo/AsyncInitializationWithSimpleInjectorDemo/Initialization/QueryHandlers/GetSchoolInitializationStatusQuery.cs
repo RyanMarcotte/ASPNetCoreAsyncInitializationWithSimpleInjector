@@ -1,12 +1,12 @@
-﻿using Functional;
-using Functional.CQS;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AISIDemo.EntityFramework.Infrastructure;
+using Functional;
+using Functional.CQS;
+using Microsoft.EntityFrameworkCore;
 
 namespace AsyncInitializationWithSimpleInjectorDemo.Initialization.QueryHandlers
 {
@@ -29,7 +29,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo.Initialization.QueryHandlers
 			{
 				using (var context = _dbContextFactory.CreateContext())
 				{
-					return await context.Students.AnyAsync();
+					return await context.Students.AnyAsync(cancellationToken);
 				}
 			});
 		}
