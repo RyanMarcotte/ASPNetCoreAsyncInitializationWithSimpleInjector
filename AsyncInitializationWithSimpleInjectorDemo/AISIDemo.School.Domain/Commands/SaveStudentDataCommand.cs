@@ -7,5 +7,11 @@ namespace AISIDemo.School.Domain.Commands
 {
 	public class SaveStudentDataCommand : ICommandParameters<Exception>
 	{
+		public SaveStudentDataCommand(Student[] studentCollection)
+		{
+			StudentCollection = studentCollection ?? throw new ArgumentNullException(nameof(studentCollection));
+		}
+
+		public Student[] StudentCollection { get; }
 	}
 }
