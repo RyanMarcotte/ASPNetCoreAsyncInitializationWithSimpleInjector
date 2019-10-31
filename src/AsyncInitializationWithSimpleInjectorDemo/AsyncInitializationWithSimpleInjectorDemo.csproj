@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Functional.CQS.AOP.IoC.SimpleInjector" Version="1.0.0" />
+    <PackageReference Include="Functional.Primitives" Version="1.16.0" />
+    <PackageReference Include="Functional.Primitives.Extensions" Version="1.16.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="SimpleInjector" Version="4.7.1" />
+    <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core" Version="4.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AISIDemo.EntityFramework.Infrastructure\AISIDemo.EntityFramework.Infrastructure.csproj" />
+    <ProjectReference Include="..\AISIDemo.EntityFramework.Models\AISIDemo.EntityFramework.Models.csproj" />
+    <ProjectReference Include="..\AISIDemo.School.Domain\AISIDemo.School.Domain.csproj" />
+    <ProjectReference Include="..\AISIDemo.School.Implementation\AISIDemo.School.Implementation.csproj" />
+  </ItemGroup>
+
+</Project>
