@@ -20,7 +20,10 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 	{
 		public static async Task Main(string[] args)
 		{
-			await CreateWebHostBuilder(args).Build().InitializeAsync().RunAsync();
+			await CreateWebHostBuilder(args)
+				.Build()
+				.InitializeAsync()
+				.RunAsync();
 		}
 
 		public static IWebHostBuilder CreateWebHostBuilder(string[] args) => WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
@@ -28,6 +31,16 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 
 	internal static class AsyncInitializationExtensions
 	{
+		/// <summary>
+		/// At this point, <see cref="Startup.ConfigureServices"/> has been run, but not <see cref="Startup.Configure"/>.  Thus, we build
+		/// a separate <see cref="Container"/> for async initialization.  The cost of performing async initialization itself is greater than
+		/// performing application component registration twice (using <see cref="SimpleInjectorExtensions.RegisterApplicationComponentsAndVerify"/>
+		/// here and in <see cref="Startup.Configure"/>), so the minor performance hit is an acceptable tradeoff.  The split between a 
+		/// 'startup <see cref="Container"/>' and a 'runtime <see cref="Container"/>' also prevents async initialization components from being 
+		/// resolved after startup (because the 'runtime <see cref="Container"/>' did not have the async initialization components registered with it).
+		/// </summary>
+		/// <param name="host"></param>
+		/// <returns></returns>
 		public static async Task<IWebHost> InitializeAsync(this IWebHost host)
 		{
 			using (var scope = host.Services.CreateScope())

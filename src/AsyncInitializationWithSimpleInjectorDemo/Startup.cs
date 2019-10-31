@@ -28,6 +28,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 
 		/// <summary>
 		/// This method gets called by the runtime as part of <see cref="IWebHostBuilder.Build"/>.
+		/// No application components get registered as part of this step...  only infrastructure components.
 		/// </summary>
 		/// <param name="services"></param>
 		public void ConfigureServices(IServiceCollection services)
@@ -39,6 +40,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 
 		/// <summary>
 		/// This method gets called by the runtime as part of <see cref="IWebHost.Start"/> / <see cref="IWebHost.StartAsync(System.Threading.CancellationToken)"/>.
+		/// Application components are registered as part of this step.
 		/// </summary>
 		/// <param name="app"></param>
 		/// <param name="env"></param>
