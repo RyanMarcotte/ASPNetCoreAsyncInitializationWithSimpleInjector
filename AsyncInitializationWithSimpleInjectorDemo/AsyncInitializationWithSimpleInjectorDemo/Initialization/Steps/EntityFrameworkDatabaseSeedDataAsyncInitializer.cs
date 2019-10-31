@@ -40,81 +40,30 @@ namespace AsyncInitializationWithSimpleInjectorDemo.Initialization.Steps
 						.BindAsync(_ => _saveCourseDataCommandHandler.HandleAsync(new SaveCourseDataCommand(CreateCourseSeedData()), cancellationToken))
 						.BindAsync(_ => _saveEnrollmentDataCommandHandler.HandleAsync(new SaveEnrollmentDataCommand(CreateEnrollmentSeedData()), cancellationToken));
 				});
-
-			/*{
-				
-				using (var context = _dbContextFactory.CreateContext())
-				{
-
-					if (context.Students.Any())
-						return;
-
-					var studentRecords = new StudentRecord[]
-					{
-						new StudentRecord{FirstName="Carson",LastName="Alexander",EnrollmentDate=DateTime.Parse("2005-09-01")},
-						new StudentRecord{FirstName="Meredith",LastName="Alonso",EnrollmentDate=DateTime.Parse("2002-09-01")},
-						new StudentRecord{FirstName="Arturo",LastName="Anand",EnrollmentDate=DateTime.Parse("2003-09-01")},
-						new StudentRecord{FirstName="Gytis",LastName="Barzdukas",EnrollmentDate=DateTime.Parse("2002-09-01")},
-						new StudentRecord{FirstName="Yan",LastName="Li",EnrollmentDate=DateTime.Parse("2002-09-01")},
-						new StudentRecord{FirstName="Peggy",LastName="Justice",EnrollmentDate=DateTime.Parse("2001-09-01")},
-						new StudentRecord{FirstName="Laura",LastName="Norman",EnrollmentDate=DateTime.Parse("2003-09-01")},
-						new StudentRecord{FirstName="Nino",LastName="Olivetto",EnrollmentDate=DateTime.Parse("2005-09-01")}
-					};
-
-					foreach (var s in studentRecords)
-						context.Students.Add(s);
-
-					var courseRecords = new CourseRecord[]
-					{
-						new CourseRecord{ID=1050,Title="Chemistry",Credits=3},
-						new CourseRecord{ID=4022,Title="Microeconomics",Credits=3},
-						new CourseRecord{ID=4041,Title="Macroeconomics",Credits=3},
-						new CourseRecord{ID=1045,Title="Calculus",Credits=4},
-						new CourseRecord{ID=3141,Title="Trigonometry",Credits=4},
-						new CourseRecord{ID=2021,Title="Composition",Credits=3},
-						new CourseRecord{ID=2042,Title="Literature",Credits=4}
-					};
-
-					foreach (CourseRecord c in courseRecords)
-						context.Courses.Add(c);
-
-					var enrollmentRecords = new EnrollmentRecord[]
-					{
-						new EnrollmentRecord{StudentID=1,CourseID=1050,Grade=Grade.A},
-						new EnrollmentRecord{StudentID=1,CourseID=4022,Grade=Grade.C},
-						new EnrollmentRecord{StudentID=1,CourseID=4041,Grade=Grade.B},
-						new EnrollmentRecord{StudentID=2,CourseID=1045,Grade=Grade.B},
-						new EnrollmentRecord{StudentID=2,CourseID=3141,Grade=Grade.F},
-						new EnrollmentRecord{StudentID=2,CourseID=2021,Grade=Grade.F},
-						new EnrollmentRecord{StudentID=3,CourseID=1050},
-						new EnrollmentRecord{StudentID=4,CourseID=1050},
-						new EnrollmentRecord{StudentID=4,CourseID=4022,Grade=Grade.F},
-						new EnrollmentRecord{StudentID=5,CourseID=4041,Grade=Grade.C},
-						new EnrollmentRecord{StudentID=6,CourseID=1045},
-						new EnrollmentRecord{StudentID=7,CourseID=3141,Grade=Grade.A},
-					};
-
-					foreach (EnrollmentRecord e in enrollmentRecords)
-						context.Enrollments.Add(e);
-					
-					await context.SaveChangesAsync();
-				}
-			});*/
 		}
 
 		private static Student[] CreateStudentSeedData()
 		{
-			return new Student[] { };
+			return Array.Empty<Student>();
 		}
 
 		private static Course[] CreateCourseSeedData()
 		{
-			return new Course[] { };
+			return new Course[]
+			{
+				new Course(1050, "Chemistry", 3),
+				new Course(4022, "Microeconomics", 3),
+				new Course(4041, "Macroeconomics", 3),
+				new Course(1045, "Calculus", 4),
+				new Course(3141, "Trigonometry", 4),
+				new Course(2021, "Composition", 3),
+				new Course(2042, "Literature", 4)
+			};
 		}
 
 		private static Enrollment[] CreateEnrollmentSeedData()
 		{
-			return new Enrollment[] { };
+			return Array.Empty<Enrollment>();
 		}
 	}
 }

@@ -29,7 +29,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo.Initialization.QueryHandlers
 			{
 				using (var context = _dbContextFactory.CreateContext())
 				{
-					return await context.Students.AnyAsync(cancellationToken);
+					return await context.Courses.AnyAsync(cancellationToken);
 				}
 			});
 		}
