@@ -17,8 +17,6 @@ namespace AsyncInitializationWithSimpleInjectorDemo.Initialization.Steps
 		private readonly IAsyncCommandHandler<SaveCourseDataCommand, Exception> _saveCourseDataCommandHandler;
 		private readonly IAsyncCommandHandler<SaveEnrollmentDataCommand, Exception> _saveEnrollmentDataCommandHandler;
 
-		private readonly IDbContextFactory<SchoolContext> _dbContextFactory;
-
 		public EntityFrameworkDatabaseSeedDataAsyncInitializer(
 			IAsyncQueryHandler<GetSchoolInitializationStatusQuery, Result<bool, Exception>> getSchoolInitializationStatusQueryHandler,
 			IAsyncCommandHandler<SaveStudentDataCommand, Exception> saveStudentDataCommandHandler,
