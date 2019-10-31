@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AISIDemo.EntityFramework.Infrastructure;
 using AsyncInitializationWithSimpleInjectorDemo.Initialization;
@@ -31,15 +32,21 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 		{
 			using (var scope = host.Services.CreateScope())
 			{
+				// register any infrastructure components that have already been registered with the .NET Core DI container
 				var container = new Container();
 				container.RegisterInstance(scope.ServiceProvider.GetService<DbContextOptions<SchoolContext>>());
+
+				// register the individual async initializers in the order you want to execute them
 				container.Collection.Register<IAsyncInitializer>(
 					typeof(EntityFrameworkDatabaseMigrationAsyncInitializer),
 					typeof(EntityFrameworkDatabaseSeedDataAsyncInitializer));
 				container.Register<RootInitializer>();
+
+				// register all your application components
 				container.RegisterApplicationComponentsAndVerify();
 
-				await container.GetInstance<RootInitializer>().InitializeAsync();
+				// execute all asynchronous initializers specified above
+				await container.GetInstance<RootInitializer>().InitializeAsync(CancellationToken.None);
 			}
 
 			return host;

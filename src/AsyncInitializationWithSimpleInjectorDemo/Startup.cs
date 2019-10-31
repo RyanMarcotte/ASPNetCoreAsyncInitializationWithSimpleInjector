@@ -26,7 +26,10 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 			_configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 		}
 
-		// This method gets called by the runtime. Use this method to add services to the container.
+		/// <summary>
+		/// This method gets called by the runtime as part of <see cref="IWebHostBuilder.Build"/>.
+		/// </summary>
+		/// <param name="services"></param>
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -34,7 +37,11 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 			services.AddSimpleInjector(_container, options => options.AddAspNetCore().AddControllerActivation());
 		}
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		/// <summary>
+		/// This method gets called by the runtime as part of <see cref="IWebHost.Start"/> / <see cref="IWebHost.StartAsync(System.Threading.CancellationToken)"/>.
+		/// </summary>
+		/// <param name="app"></param>
+		/// <param name="env"></param>
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
 			if (env.IsDevelopment())
@@ -46,6 +53,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
+
 			app.UseSimpleInjectorWithApplicationComponents(_container);
 			app.UseHttpsRedirection();
 			app.UseMvc();

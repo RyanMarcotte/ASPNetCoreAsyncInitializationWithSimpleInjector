@@ -15,11 +15,12 @@ namespace AsyncInitializationWithSimpleInjectorDemo.Initialization
 			_initializerCollection = initializerCollection ?? throw new ArgumentNullException(nameof(initializerCollection));
 		}
 
-		public async Task InitializeAsync()
+		public async Task InitializeAsync(CancellationToken cancellationToken)
 		{
 			foreach (var initializer in _initializerCollection)
 			{
-				await initializer.InitializeAsync(CancellationToken.None).Match(
+				cancellationToken.ThrowIfCancellationRequested();
+				await initializer.InitializeAsync(cancellationToken).Match(
 					_ => _,
 					exception => throw new Exception($"An exception occurred during initialization ({initializer.GetType().FullName})!", exception));
 			}
