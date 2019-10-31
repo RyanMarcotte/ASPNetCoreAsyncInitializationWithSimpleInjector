@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AISIDemo.EntityFramework.Infrastructure;
 using AISIDemo.School.Domain;
 using AISIDemo.School.Domain.Commands;
 using AsyncInitializationWithSimpleInjectorDemo.Initialization.QueryHandlers;
