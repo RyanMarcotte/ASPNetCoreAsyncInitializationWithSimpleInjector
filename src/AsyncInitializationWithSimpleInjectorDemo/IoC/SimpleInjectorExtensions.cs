@@ -25,7 +25,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo.IoC
 		}
 
 		// this exists to get around lifestyle mismatch / captive dependency problem (https://blog.ploeh.dk/2014/06/02/captive-dependency/)
-		// 'DbContextOptions<PrintBinTagsContext> is registered with Microsoft container as 'async scoped', but this factory is registered as 'singleton'
+		// 'DbContextOptions<SchoolContext> is registered with .NET Core container as 'async scoped', but this factory is registered as 'singleton'
 		// direct dependency on container is fine since this is part of the application composition root (https://stackoverflow.com/questions/21905058/factory-interface-in-simple-injector)
 		private class SchoolContextFactory : IDbContextFactory<SchoolContext>
 		{

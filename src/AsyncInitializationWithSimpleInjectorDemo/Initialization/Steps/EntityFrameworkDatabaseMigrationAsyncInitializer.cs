@@ -20,10 +20,8 @@ namespace AsyncInitializationWithSimpleInjectorDemo.Initialization.Steps
 		{
 			return Result.TryAsync(async () =>
 			{
-				using (var context = _dbContextFactory.CreateContext())
-				{
-					await context.Database.MigrateAsync();
-				}
+				using var context = _dbContextFactory.CreateContext();
+				await context.Database.MigrateAsync(cancellationToken);
 			});
 		}
 	}
