@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using SimpleInjector;
 
 namespace AsyncInitializationWithSimpleInjectorDemo
@@ -30,7 +31,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 		/// <param name="services"></param>
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 			services.AddDbContext<SchoolContext>(options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 			services.AddSimpleInjector(_container, options => options.AddAspNetCore().AddControllerActivation());
 		}
@@ -41,7 +42,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 		/// </summary>
 		/// <param name="app"></param>
 		/// <param name="env"></param>
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			if (env.IsDevelopment())
 			{
@@ -55,7 +56,8 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 
 			app.UseSimpleInjectorWithApplicationComponents(_container);
 			app.UseHttpsRedirection();
-			app.UseMvc();
+			app.UseRouting();
+			app.UseEndpoints(c => c.MapControllers());
 		}
 	}
 }

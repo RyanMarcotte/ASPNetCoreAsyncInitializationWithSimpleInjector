@@ -27,10 +27,8 @@ namespace AsyncInitializationWithSimpleInjectorDemo.Initialization.QueryHandlers
 		{
 			return Result.TryAsync(async () =>
 			{
-				using (var context = _dbContextFactory.CreateContext())
-				{
-					return await context.Courses.AnyAsync(cancellationToken);
-				}
+				using var context = _dbContextFactory.CreateContext();
+				return await context.Courses.AnyAsync(cancellationToken);
 			});
 		}
 	}

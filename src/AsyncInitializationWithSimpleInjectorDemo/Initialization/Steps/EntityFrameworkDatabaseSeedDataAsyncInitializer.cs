@@ -30,6 +30,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo.Initialization.Steps
 
 		public Task<Result<Unit, Exception>> InitializeAsync(CancellationToken cancellationToken = default)
 		{
+			// if database has not already been initialized with seed data, do so
 			return _getSchoolInitializationStatusQueryHandler.HandleAsync(new GetSchoolInitializationStatusQuery(), cancellationToken)
 				.BindIfFalseAsync(async () =>
 				{
