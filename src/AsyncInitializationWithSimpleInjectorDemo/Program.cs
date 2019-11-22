@@ -9,9 +9,7 @@ using AsyncInitializationWithSimpleInjectorDemo.IoC;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using SimpleInjector;
 
 namespace AsyncInitializationWithSimpleInjectorDemo
@@ -46,6 +44,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 			using (var scope = host.Services.CreateScope())
 			{
 				// register any infrastructure components that have already been registered with the .NET Core DI container
+				// you only need to register the infrastructure components that are required by asynchronous initializers
 				var container = new Container();
 				container.RegisterInstance(scope.ServiceProvider.GetService<DbContextOptions<SchoolContext>>());
 
