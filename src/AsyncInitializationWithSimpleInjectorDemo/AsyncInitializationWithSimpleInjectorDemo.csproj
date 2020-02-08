@@ -21,8 +21,4 @@
     <ProjectReference Include="..\AISIDemo.School.Implementation\AISIDemo.School.Implementation.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\" />
-  </ItemGroup>
-
 </Project>
