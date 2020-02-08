@@ -21,7 +21,10 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 
 		public Startup(IConfiguration configuration)
 		{
-			_configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+			_configuration = new ConfigurationBuilder()
+				.AddConfiguration(configuration ?? throw new ArgumentNullException(nameof(configuration)))
+				.AddUserSecrets<Startup>()
+				.Build();
 		}
 
 		/// <summary>

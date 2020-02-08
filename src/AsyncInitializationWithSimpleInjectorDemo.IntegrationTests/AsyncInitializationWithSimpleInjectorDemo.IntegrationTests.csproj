@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+
+    <UserSecretsId>3707f132-ecde-45a7-b0d5-af974cae8e2b</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\AsyncInitializationWithSimpleInjectorDemo\appsettings.json" Link="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.10.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="coverlet.collector" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AsyncInitializationWithSimpleInjectorDemo\AsyncInitializationWithSimpleInjectorDemo.csproj" />
+  </ItemGroup>
+
+</Project>

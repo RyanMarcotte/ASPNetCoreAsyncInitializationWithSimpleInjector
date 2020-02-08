@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 		public static IWebHostBuilder CreateWebHostBuilder(string[] args) => WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
 	}
 
-	internal static class AsyncInitializationExtensions
+	public static class AsyncInitializationExtensions
 	{
 		/// <summary>
 		/// At this point, <see cref="Startup.ConfigureServices"/> has been run, but not <see cref="Startup.Configure"/>.  Thus, we build
@@ -41,29 +42,34 @@ namespace AsyncInitializationWithSimpleInjectorDemo
 		/// <returns></returns>
 		public static async Task<IWebHost> InitializeAsync(this IWebHost host)
 		{
-			using (var scope = host.Services.CreateScope())
-			{
-				// register any infrastructure components that have already been registered with the .NET Core DI container
-				// you only need to register the infrastructure components that are required by asynchronous initializers
-				var container = new Container();
-				container.RegisterInstance(scope.ServiceProvider.GetService<DbContextOptions<SchoolContext>>());
-
-				// register the individual async initializers in the order you want to execute them
-				container.Collection.Register<IAsyncInitializer>(
-					typeof(EntityFrameworkDatabaseMigrationAsyncInitializer),
-					typeof(EntityFrameworkDatabaseSeedDataAsyncInitializer));
-				container.Register<RootInitializer>();
-
-				// register all your application components
-				container.RegisterApplicationComponentsAndVerify();
-
-				// execute all asynchronous initializers specified above
-				await container.GetInstance<RootInitializer>().InitializeAsync(CancellationToken.None);
-			}
+			await host.Services.BuildInitializationContainerAndPerformInitialization();
 
 			return host;
 		}
 
 		public static async Task RunAsync(this Task<IWebHost> host) => await (await host).RunAsync();
+
+		// used by InitializeAsync above and for setup in integration tests
+		public static async Task BuildInitializationContainerAndPerformInitialization(this IServiceProvider serviceProvider)
+		{
+			using var scope = serviceProvider.CreateScope();
+
+			// register any infrastructure components that have already been registered with the .NET Core DI container
+			// you only need to register the infrastructure components that are required by asynchronous initializers
+			var container = new Container();
+			container.RegisterInstance(scope.ServiceProvider.GetService<DbContextOptions<SchoolContext>>());
+
+			// register the individual async initializers in the order you want to execute them
+			container.Collection.Register<IAsyncInitializer>(
+				typeof(EntityFrameworkDatabaseMigrationAsyncInitializer),
+				typeof(EntityFrameworkDatabaseSeedDataAsyncInitializer));
+			container.Register<RootInitializer>();
+
+			// register all your application components
+			container.RegisterApplicationComponentsAndVerify();
+
+			// execute all asynchronous initializers specified above
+			await container.GetInstance<RootInitializer>().InitializeAsync(CancellationToken.None);
+		}
 	}
 }
