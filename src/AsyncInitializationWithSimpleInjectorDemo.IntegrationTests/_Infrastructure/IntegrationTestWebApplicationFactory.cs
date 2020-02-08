@@ -10,7 +10,7 @@ namespace AsyncInitializationWithSimpleInjectorDemo.IntegrationTests._Infrastruc
 {
 	public class IntegrationTestWebApplicationFactory : WebApplicationFactory<Startup>
 	{
-		// 
+		// build configuration for integration tests...  this will be used to override the 'production' values
 		private static readonly IConfigurationRoot _configuration = new ConfigurationBuilder()
 			.SetBasePath(Directory.GetCurrentDirectory())
 			.AddJsonFile("appsettings.json")
@@ -19,6 +19,10 @@ namespace AsyncInitializationWithSimpleInjectorDemo.IntegrationTests._Infrastruc
 
 		protected override void ConfigureWebHost(IWebHostBuilder builder)
 		{
+			// the .NET Core framework will perform actions in the following order:
+			// - add the integration test configuration, potentially overriding 'production' configuration values
+			// - setup is performed via Startup.ConfigureServices
+			// - additional setup is performed via IntegrationTestWebApplicationFactory.ConfigureServices (called by ConfigureTestServices)
 			base.ConfigureWebHost(builder);
 			builder.ConfigureAppConfiguration((context, configuration) => configuration.AddConfiguration(_configuration));
 			builder.ConfigureTestServices(ConfigureServices);
