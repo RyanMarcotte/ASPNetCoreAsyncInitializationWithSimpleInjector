@@ -10,9 +10,11 @@ namespace AsyncInitializationWithSimpleInjectorDemo.IntegrationTests._Infrastruc
 {
 	public class IntegrationTestWebApplicationFactory : WebApplicationFactory<Startup>
 	{
+		// 
 		private static readonly IConfigurationRoot _configuration = new ConfigurationBuilder()
 			.SetBasePath(Directory.GetCurrentDirectory())
 			.AddJsonFile("appsettings.json")
+			.AddUserSecrets<IntegrationTestHttpClientFactory>()
 			.Build();
 
 		protected override void ConfigureWebHost(IWebHostBuilder builder)
